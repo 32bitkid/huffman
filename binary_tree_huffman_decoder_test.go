@@ -4,17 +4,32 @@ import t "testing"
 import "bytes"
 import br "github.com/32bitkid/bitreader"
 import "github.com/32bitkid/huffman"
+import "fmt"
 
-func ExampleNewHuffmanDecoder_simple() {
+func ExampleHuffmanDecoder_simple() {
 	table := huffman.HuffmanTable{
-		"1":  "True",
-		"01": "False",
-		"00": "Maybe",
+		"1":  true,
+		"01": false,
+		"00": "maybe",
 	}
-	huffman.NewBinaryTreeHuffmanDecoder(table)
+	ternaryDecoder := huffman.NewBinaryTreeHuffmanDecoder(table)
+
+	r := br.NewBitReader(bytes.NewReader([]byte{0xa0}))
+
+	val, _ := ternaryDecoder.Decode(r)
+	fmt.Println(val)
+	val, _ = ternaryDecoder.Decode(r)
+	fmt.Println(val)
+	val, _ = ternaryDecoder.Decode(r)
+	fmt.Println(val)
+
+	// output:
+	// true
+	// false
+	// maybe
 }
 
-func ExampleHuffmanTable() {
+func Example() {
 	// representation huffman tree generated from the
 	// text "this is an example of a huffman tree"
 
@@ -36,7 +51,28 @@ func ExampleHuffmanTable() {
 		"00111": 'u',
 		"10010": 'x',
 	}
-	huffman.NewBinaryTreeHuffmanDecoder(table)
+
+	decoder := huffman.NewBinaryTreeHuffmanDecoder(table)
+
+	// the text "hello huffman" encoded using the table
+	//
+	// Text:       h    e   l     l     o     _   h    u     f    f    m    a   n
+	// encoded: 0b 1010 000 11001 11001 00110 111 1010 00111 1101 1101 0111 010 0010
+	// aligned: 0b 1010 0001 1001 1100 1001 1011 1101 0001 1111 0111 0101 1101 0001 0000
+	// hex:     0x    a    1    9    c    9    b    d    1    f    7    5    d    1    0
+
+	data := []byte{0xa1, 0x9c, 0x9b, 0xd1, 0xf7, 0x5d, 0x10}
+	r := br.NewBitReader(bytes.NewReader(data))
+
+	for i := 0; i < 13; i++ {
+		val, _ := decoder.Decode(r)
+		fmt.Printf("%c", val)
+	}
+
+	fmt.Println()
+
+	// Output:
+	// hello huffman
 }
 
 func TestBTHD_Simple(t *t.T) {
