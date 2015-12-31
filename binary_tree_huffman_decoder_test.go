@@ -69,8 +69,6 @@ func Example() {
 		fmt.Printf("%c", val)
 	}
 
-	fmt.Println()
-
 	// Output:
 	// hello huffman
 }
