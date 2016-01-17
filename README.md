@@ -2,7 +2,7 @@
 
 Provides basic huffman decoder implemenation.
 
-See the [documentation](https://godoc.org/github.com/32bitkid/huffman).
+[![GoDoc](https://godoc.org/github.com/32bitkid/huffman?status.svg)](https://godoc.org/github.com/32bitkid/huffman)
 
 ## Installation
 
@@ -27,7 +27,7 @@ for {
     val, err := decoder.Decode(br)
     if err != nil {
         break
-    } 
+    }
     fmt.Println("%s", val)
 }
 ```
