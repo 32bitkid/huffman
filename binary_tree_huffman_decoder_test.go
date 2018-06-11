@@ -14,7 +14,7 @@ func ExampleHuffmanDecoder_simple() {
 	}
 	ternaryDecoder := huffman.NewBinaryTreeHuffmanDecoder(table)
 
-	r := br.NewBitReader(bytes.NewReader([]byte{0xa0}))
+	r := br.NewReader(bytes.NewReader([]byte{0xa0}))
 
 	val, _ := ternaryDecoder.Decode(r)
 	fmt.Println(val)
@@ -62,7 +62,7 @@ func Example() {
 	// hex:     0x    a    1    9    c    9    b    d    1    f    7    5    d    1    0
 
 	data := []byte{0xa1, 0x9c, 0x9b, 0xd1, 0xf7, 0x5d, 0x10}
-	r := br.NewBitReader(bytes.NewReader(data))
+	r := br.NewReader(bytes.NewReader(data))
 
 	for i := 0; i < 13; i++ {
 		val, _ := decoder.Decode(r)
@@ -77,7 +77,7 @@ func TestBTHD_Simple(t *t.T) {
 
 	// 0xa5 => 0b 1 01 00 1 01 => True, False, Maybe, True, False
 
-	br := br.NewBitReader(bytes.NewReader([]byte{0xa5}))
+	br := br.NewReader(bytes.NewReader([]byte{0xa5}))
 
 	init := huffman.HuffmanTable{
 		"1":  "True",
@@ -128,7 +128,7 @@ func TestBTHD_Formatted(t *t.T) {
 
 	// 0xa5 => 0b 1 01 00 1 01 => True, False, Maybe, True, False
 
-	br := br.NewBitReader(bytes.NewReader([]byte{0xa5}))
+	br := br.NewReader(bytes.NewReader([]byte{0xa5}))
 
 	init := huffman.HuffmanTable{
 		"1":   "True",

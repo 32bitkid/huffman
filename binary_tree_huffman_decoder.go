@@ -105,7 +105,7 @@ func (self *binaryTreeHuffmanDecoder) Decode(br bitreader.BitReader) (interface{
 		} else if nextNode, ok := val.(*binaryHuffmanNode); ok {
 			currentNode = nextNode
 		} else {
-			br.Trash(i)
+			br.Skip(i)
 			return val, nil
 		}
 	}
